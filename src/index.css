@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn{
+    @apply transition duration-200 bg-blue-400 hover:bg-blue-700 shadow
+}
