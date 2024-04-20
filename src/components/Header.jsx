@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import {
   BoltIcon,
@@ -6,8 +6,18 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/solid";
 import ActiveLink from "./ActiveLink";
+import { AuthContext } from "../provider/AuthProvider";
+import { toast } from "react-toastify";
 
 const Header = () => {
+  const {user, logOut} = useContext(AuthContext);
+  const handleLogOut = () => {
+    logOut().then(result => {
+      toast.success('Logout success')
+    }).catch(error => {
+      console.log(error.message);
+    })
+  }
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <div className="bg-gray-100 w-[95%] mx-auto flex justify-between items-center px-8 py-4">
@@ -36,6 +46,25 @@ const Header = () => {
         >
           About Us
         </NavLink>
+        {
+          user ? <>
+          <span>{user.email}</span>
+          <button onClick={handleLogOut}>Logout</button>
+          </> : <>
+          <NavLink
+          to="/login"
+          className={({ isActive }) => (isActive ? "text-blue-500" : "default")}
+        >
+          Login
+        </NavLink>
+        <NavLink
+          to="/register"
+          className={({ isActive }) => (isActive ? "text-blue-500" : "default")}
+        >
+          Register
+        </NavLink>
+          </>
+        }
       </div>
       {/* Mobile Navbar */}
       <div className="lg:hidden ">
